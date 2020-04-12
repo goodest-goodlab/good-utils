@@ -48,19 +48,22 @@ if stderr != "":
 nodes = list(filter(None, stdout.split("\n")));
 # Get the list of nodes from stdout
 
-col_width = 16;
+col_space = 4;
 indent_width = 5
+col_widths = [];
 # Spacing options
 
-headers = ["NODE NAME", "CPUs TOTAL", "CPUs ALLOCATED", "CPUs FREE", "TOTAL MEM (MB)", "FREE MEM (MB)", "STATE"];
+headers = ["NODE NAME", "TOTAL CPUs", "ALLOCATED CPUs", "FREE CPUs", "TOTAL MEM (MB)", "ALLOCATED MEM (MB)", "FREE MEM (MB)", "STATE"];
 header = " " * indent_width;
 for h in headers:
-    num_spaces = col_width - len(h);
+    col_width = len(h) + col_space;
+    num_spaces = col_space;
+    col_widths.append(col_width);
     header += h + " " * num_spaces;
 print(header);
 # Print the header
 
-ordered_cols = ['NodeName', 'CPUTot', 'CPUAlloc', 'CPUFree', 'RealMemory', 'FreeMem', 'State'];
+ordered_cols = ['NodeName', 'CPUTot', 'CPUAlloc', 'CPUFree', 'RealMemory', 'AllocMem', 'FreeMem', 'State'];
 for node in nodes:
     outline = " " * indent_width;
     node_info = {};
@@ -76,9 +79,11 @@ for node in nodes:
     node_info['CPUFree'] = str(int(node_info['CPUTot']) - int(node_info['CPUAlloc']));
     # CPUs free is calculated based on total and allocated CPUs
 
+    col_ind = 0;
     for col in ordered_cols:
-        num_spaces = col_width - len(node_info[col])
+        num_spaces = col_widths[col_ind] - len(node_info[col]);
         outline += node_info[col] + " " * num_spaces;
+        col_ind += 1;
 
     print(outline);
 # Print the info for each node returned from the command.
