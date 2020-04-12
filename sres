@@ -46,12 +46,12 @@ if stderr != "":
 # Check if the command returned an error.
 
 nodes = list(filter(None, stdout.split("\n")));
-# Get the list of nodes from stdout
+# Get the list of nodes from stdout.
 
 col_space = 4;
 indent_width = 5
 col_widths = [];
-# Spacing options
+# Spacing options.
 
 headers = ["NODE NAME", "TOTAL CPUs", "ALLOCATED CPUs", "FREE CPUs", "TOTAL MEM (MB)", "ALLOCATED MEM (MB)", "FREE MEM (MB)", "STATE"];
 header = " " * indent_width;
@@ -61,7 +61,7 @@ for h in headers:
     col_widths.append(col_width);
     header += h + " " * num_spaces;
 print(header);
-# Print the header
+# Print the header.
 
 ordered_cols = ['NodeName', 'CPUTot', 'CPUAlloc', 'CPUFree', 'RealMemory', 'AllocMem', 'FreeMem', 'State'];
 for node in nodes:
@@ -69,23 +69,25 @@ for node in nodes:
     node_info = {};
     for col in ordered_cols:
         node_info[col] = "NA";
+    # Initialize the current line and dict.
 
     node = node.split(" ");
     for n in node:
         n = n.split("=");
         if n[0] in ordered_cols:
             node_info[n[0]] = n[1];
+    # Search the current line for all output columns.
 
     node_info['CPUFree'] = str(int(node_info['CPUTot']) - int(node_info['CPUAlloc']));
-    # CPUs free is calculated based on total and allocated CPUs
+    # CPUs free is calculated based on total and allocated CPUs.
 
     col_ind = 0;
     for col in ordered_cols:
         num_spaces = col_widths[col_ind] - len(node_info[col]);
         outline += node_info[col] + " " * num_spaces;
         col_ind += 1;
-
     print(outline);
+    # Output the info for this line.
 # Print the info for each node returned from the command.
 
 
