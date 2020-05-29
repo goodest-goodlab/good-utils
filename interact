@@ -1,0 +1,69 @@
+#!/bin/bash
+
+############################################################
+# Command line tool for SLURM clusters to request interactive
+# allocations with salloc
+# Parses output of:     scontrol -o show nodes --all
+# Usage:
+#       res <partition or node name>
+#
+# May, 2020
+############################################################
+
+display_usage() {
+# Usage message for -h
+    echo
+    echo " Usage:"
+    echo
+    echo "     interact -p <partition> -t <tasks> -c <cpus> -m <mem>"
+    echo
+    echo " Options:"
+    echo "     -p: The SLURM partition to use. Default: good_lab_cpu"
+    echo "     -t: The number of tasks to allocate. Default: 1"
+    echo "     -c: The number of CPUs to allocate. Default: 8"
+    echo "     -m: The minimum amount of memory to allocate. Default: 0 (no minimum)"
+    echo "     -h: Display this help message."
+    echo
+    exit 0
+}
+
+##########
+# Invalid input option message
+invalid_opt() {
+    echo "    Error 1: Invalid option: -$1"
+    echo
+    exit 1
+}
+
+############################################################
+
+echo
+echo " interact -- Request interactive session in SLURM via salloc"
+
+part="good_lab_cpu"
+tasks=1
+cpus=8
+mem=0
+# Defaults
+
+while getopts ":p:t:c:m:h" arg; do
+    case $arg in
+        h) display_usage;;
+        p) part=$OPTARG;;
+        t) tasks=$OPTARG;;
+        c) cpus=$OPTARG;;
+        m) mem=$OPTARG;;
+        \?) invalid_opt $OPTARG ;;
+    esac
+done
+# Parse input options
+
+echo "    Partition:  $part"
+echo "    Tasks:      $tasks"
+echo "    CPUs:       $cpus"
+echo "    Min memory: $mem"
+echo
+
+salloc -p $part -n $tasks -c $cpus --mem $mem srun --pty bash
+
+############################################################
