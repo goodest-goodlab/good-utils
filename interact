@@ -5,9 +5,9 @@
 # allocations with salloc
 # Parses output of:     scontrol -o show nodes --all
 # Usage:
-#       res <partition or node name>
+#       interact -p <partition> -t <tasks> -c <cpus> -m <mem>
 #
-# May, 2020
+# May, 2020, gwct
 ############################################################
 
 display_usage() {

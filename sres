@@ -9,7 +9,7 @@
 # If no partition or node name is given, displays 
 # info for ALL nodes.
 #
-# April, 2020
+# April, 2020, gwct
 ############################################################
 
 import sys, subprocess
