@@ -2,8 +2,8 @@
 
 ############################################################
 # Command line tool for SLURM clusters to request interactive
-# allocations with salloc
-# Parses output of:     scontrol -o show nodes --all
+# node allocations
+# Calls:    salloc
 # Usage:
 #       interact -p <partition> -t <tasks> -c <cpus> -m <mem>
 #
