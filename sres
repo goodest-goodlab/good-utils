@@ -49,7 +49,7 @@ nodes = list(filter(None, stdout.split("\n")));
 # Get the list of nodes from stdout.
 
 col_spaces = [5, 12, 4, 4, 4, 4, 4, 4, 4];
-if len(sys.argv) < 2 or sys.argv[1] in ["good_lab_cpu", "good_lab_large_cpu", "good_lab", "good_lab_large"]:
+if len(sys.argv) < 2 or sys.argv[1] in ["good_lab_cpu", "good_lab_large_cpu", "good_lab", "good_lab_large", "large"]:
     col_spaces[1] = 20;
 indent_width = 5
 col_widths = [];

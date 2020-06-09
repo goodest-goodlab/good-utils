@@ -1,0 +1,9 @@
+# Some helpful aliases -- add them to your .bash_profile if they are useful to you
+# June 2020, gwct
+
+alias 'sq=squeue -o "%.10i %.20P %.25j %.8u %.8T %.12M %.10L %.6D %.5C %.10m %R"'
+# A better formatted version of the squeue command to show info about running jobs in our partition
+# squeue/sq -all shows info for jobs on all partitions
+
+alias 'si=sinfo -o "%.30P %.14F %.6c %.14C %.10m %N"'
+# A better formatted version of the sinfo command to show info about nodes in our partition.
