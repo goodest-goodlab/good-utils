@@ -41,15 +41,18 @@ echo
 echo " interact -- Request interactive session in SLURM via salloc"
 
 part="good_lab_cpu"
+node=""
+nodestr=""
 tasks=1
 cpus=8
 mem=0
 # Defaults
 
-while getopts ":p:t:c:m:h" arg; do
+while getopts ":p:n:t:c:m:h" arg; do
     case $arg in
         h) display_usage;;
         p) part=$OPTARG;;
+        n) node=$OPTARG;;
         t) tasks=$OPTARG;;
         c) cpus=$OPTARG;;
         m) mem=$OPTARG;;
@@ -59,11 +62,20 @@ done
 # Parse input options
 
 echo "    Partition:  $part"
+if [ $node != "" ]
+then
+    echo "    Node:       $node"
+    nodestr="--nodelist=$node"
+fi
 echo "    Tasks:      $tasks"
 echo "    CPUs:       $cpus"
 echo "    Min memory: $mem"
 echo
 
-salloc -p $part -n $tasks -c $cpus --mem $mem srun --pty bash
+echo "EXECUTING: salloc $nodestr -p $part -n $tasks -c $cpus --mem $mem srun --pty bash"
+echo "----------"
+salloc $nodestr -p $part -n $tasks -c $cpus --mem $mem srun --pty bash
+echo "----------"
+echo "interact complete!"
 
 ############################################################
