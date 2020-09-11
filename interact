@@ -41,7 +41,7 @@ echo
 echo " interact -- Request interactive session in SLURM via salloc"
 
 part="good_lab_cpu"
-node=""
+node="none"
 nodestr=""
 tasks=1
 cpus=8
@@ -62,7 +62,7 @@ done
 # Parse input options
 
 echo "    Partition:  $part"
-if [ $node != "" ]
+if [ $node != "none" ]
 then
     echo "    Node:       $node"
     nodestr="--nodelist=$node"
