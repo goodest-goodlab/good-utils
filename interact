@@ -19,6 +19,7 @@ display_usage() {
     echo
     echo " Options:"
     echo "     -p: The SLURM partition to use. Default: good_lab_cpu"
+    echo "     -n: OPTIONAL: The specific node to login to."
     echo "     -t: The number of tasks to allocate. Default: 1"
     echo "     -c: The number of CPUs to allocate. Default: 8"
     echo "     -m: The minimum amount of memory to allocate. Default: 0 (no minimum)"
