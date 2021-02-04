@@ -82,7 +82,7 @@ parser.add_argument("-nodes", dest="nodes", help="SLURM --nodes option.", defaul
 parser.add_argument("-tasks", dest="tasks", help="SLURM --ntasks option.", type=int, default=1);
 parser.add_argument("-cpus", dest="cpus", help="SLURM --cpus-per-task option.", type=int, default=1);
 parser.add_argument("-mem", dest="mem", help="SLURM --mem option.", type=int, default=0);
-parser.add_argument("-email" dest="email", help="SLURM The user email to add to the job scripts for updates.", default=False);
+parser.add_argument("-email", dest="email", help="SLURM The user email to add to the job scripts for updates.", default=False);
 # SLURM options
 
 args = parser.parse_args();
