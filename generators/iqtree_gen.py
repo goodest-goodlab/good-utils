@@ -82,6 +82,7 @@ parser.add_argument("-nodes", dest="nodes", help="SLURM --nodes option.", defaul
 parser.add_argument("-tasks", dest="tasks", help="SLURM --ntasks option.", type=int, default=1);
 parser.add_argument("-cpus", dest="cpus", help="SLURM --cpus-per-task option.", type=int, default=1);
 parser.add_argument("-mem", dest="mem", help="SLURM --mem option.", type=int, default=0);
+parser.add_argument("-email" dest="email", help="SLURM The user email to add to the job scripts for updates.", default=False);
 # SLURM options
 
 args = parser.parse_args();
@@ -118,6 +119,8 @@ if args.tasks < 1:
     sys.exit( " * Error 8: -cpus must be a positive integer.");
 if args.tasks < 1:
     sys.exit( " * Error 9: -mem must be a positive integer.");
+if not args.email:
+    sys.exit( " * Error 10: -email must be provided for SLURM updates.");
 # SLURM option error checking
 
 pad = 26
@@ -228,7 +231,7 @@ with open(loci_submit_file, "w") as sfile:
 #SBATCH --job-name={name}
 #SBATCH --output={name}-%j.out
 #SBATCH --mail-type=ALL
-#SBATCH --mail-user=gregg.thomas@umontana.edu
+#SBATCH --mail-user={email}
 #SBATCH --partition={partition}
 #SBATCH --nodes={nodes}
 #SBATCH --ntasks={tasks}
@@ -237,7 +240,7 @@ with open(loci_submit_file, "w") as sfile:
 
 parallel -j {tasks} < {output_file}'''
 
-    sfile.write(submit.format(name=name, partition=args.part, nodes=args.nodes, tasks=args.tasks, cpus=args.cpus, mem=args.mem, output_file=loci_job_file));
+    sfile.write(submit.format(name=name, email=args.email, partition=args.part, nodes=args.nodes, tasks=args.tasks, cpus=args.cpus, mem=args.mem, output_file=loci_job_file));
 
 ##########################
 
@@ -249,7 +252,7 @@ with open(concat_submit_file, "w") as sfile:
 #SBATCH --job-name={name}
 #SBATCH --output={name}-%j.out
 #SBATCH --mail-type=ALL
-#SBATCH --mail-user=gregg.thomas@umontana.edu
+#SBATCH --mail-user={email}
 #SBATCH --partition={partition}
 #SBATCH --nodes={nodes}
 #SBATCH --ntasks={tasks}
@@ -259,6 +262,6 @@ with open(concat_submit_file, "w") as sfile:
 {concat_cmd}
 {concord_cmd}'''
 
-    sfile.write(submit.format(name=name, partition=args.part, nodes=args.nodes, tasks=1, cpus=args.tasks, mem=args.mem, concat_cmd=concat_cmd, concord_cmd=concord_cmd));
+    sfile.write(submit.format(name=name, email=args.email, partition=args.part, nodes=args.nodes, tasks=1, cpus=args.tasks, mem=args.mem, concat_cmd=concat_cmd, concord_cmd=concord_cmd));
 
 ##########################
