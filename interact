@@ -15,7 +15,7 @@ display_usage() {
     echo
     echo " Usage:"
     echo
-    echo "     interact -p <partition> -t <tasks> -c <cpus> -m <mem>"
+    echo "     interact -p <partition> -t <tasks> -c <cpus> -m <mem> -n <job name>"
     echo
     echo " Options:"
     echo "     -p: The SLURM partition to use. Default: good_lab_cpu"
@@ -47,9 +47,10 @@ nodestr=""
 tasks=1
 cpus=8
 mem=0
+name="interact_session"
 # Defaults
 
-while getopts ":p:n:t:c:m:h" arg; do
+while getopts ":p:n:t:c:m:j:h" arg; do
     case $arg in
         h) display_usage;;
         p) part=$OPTARG;;
@@ -57,6 +58,7 @@ while getopts ":p:n:t:c:m:h" arg; do
         t) tasks=$OPTARG;;
         c) cpus=$OPTARG;;
         m) mem=$OPTARG;;
+        j) name=$OPTARG;;
         \?) invalid_opt $OPTARG ;;
     esac
 done
@@ -71,11 +73,12 @@ fi
 echo "    Tasks:      $tasks"
 echo "    CPUs:       $cpus"
 echo "    Min memory: $mem"
+echo "    Job name:   $name"
 echo
 
-echo "EXECUTING: salloc $nodestr -p $part -n $tasks -c $cpus --mem $mem srun --pty bash"
+echo "EXECUTING: salloc $nodestr -p $part -n $tasks -c $cpus --mem $mem -J $name srun --pty bash"
 echo "----------"
-salloc $nodestr -p $part -n $tasks -c $cpus --mem $mem srun --pty bash
+salloc $nodestr -p $part -n $tasks -c $cpus --mem $mem -J $name srun --pty bash
 echo "----------"
 echo "interact complete!"
 
